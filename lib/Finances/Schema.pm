@@ -5,7 +5,7 @@ use strict;
 
 use base qw/DBIx::Class::Schema/;
 
-our $VERSION = 0.20;
+our $VERSION = 0.10;
 
 __PACKAGE__->load_namespaces;
 

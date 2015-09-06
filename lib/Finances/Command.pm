@@ -5,7 +5,8 @@ use warnings;
 
 our %handlers = (
   wallets => 'Finances::Wallets',
-  categories => 'Finances::Categories'
+  categories => 'Finances::Categories',
+  expenses => 'Finances::Expenses'
 );
 
 sub read {

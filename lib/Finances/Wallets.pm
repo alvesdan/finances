@@ -1,15 +1,22 @@
 package Finances::Wallets;
 use Finances::Callable qw/add_commands schema/;
+use Finances::Utils;
 use base 'Finances::Callable';
 use strict;
 use warnings;
 
-add_commands(__PACKAGE__, 'list', 'add');
+add_commands(__PACKAGE__, 'list', 'add', 'remove');
 
 sub list {
   my $self = shift;
   my @wallets = schema()->resultset('Wallet')->all;
-  Finances::Presenter->list(\@wallets, 'name');
+
+  if (@wallets) {
+    Finances::Presenter->list(\@wallets, 'name',
+      'description');
+  } else {
+    p "No wallets found.";
+  }
 }
 
 sub add {
@@ -17,17 +24,35 @@ sub add {
   my @arguments = @{shift @_};
   my ($wallet_name, $wallet_description) = @arguments;
 
-  unless ($wallet_name) {
-    print "Name is required.\n";
-    return;
-  }
+  require_or_exit(
+    $wallet_name, "Name is required.");
 
   my $insert = schema()->resultset('Wallet')->create({
     name => $wallet_name,
     description => $wallet_description
   });
 
-  print $insert->name, "\n";
+  p $insert->name;
+}
+
+sub remove {
+  my $self = shift;
+  my @arguments = @{shift @_};
+  my ($wallet_name) = @arguments;
+
+  require_or_exit(
+    $wallet_name, "Name is required.");
+
+  my $remove = schema()->resultset('Wallet')->find({
+    name => $wallet_name
+  });
+
+  if ($remove) {
+    $remove->delete;
+    p "Removed $wallet_name.";
+  } else {
+    p "Could not find $wallet_name.";
+  }
 }
 
 1;

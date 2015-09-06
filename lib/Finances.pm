@@ -3,6 +3,7 @@ use Finances::Schema;
 use Finances::Command;
 use Finances::Wallets;
 use Finances::Categories;
+use Finances::Expenses;
 use Finances::Presenter;
 
 use warnings;
