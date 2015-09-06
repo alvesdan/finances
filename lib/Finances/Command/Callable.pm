@@ -1,4 +1,4 @@
-package Finances::Callable;
+package Finances::Command::Callable;
 use strict;
 use warnings;
 
@@ -7,6 +7,7 @@ our %commands = ();
 
 use Exporter 'import';
 our @EXPORT_OK = qw/add_commands schema/;
+
 sub add_commands {
   my $class = shift;
   my $key = command_key($class);

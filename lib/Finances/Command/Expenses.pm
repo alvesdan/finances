@@ -1,7 +1,7 @@
-package Finances::Expenses;
-use Finances::Callable qw/add_commands schema/;
+package Finances::Command::Expenses;
+use Finances::Command::Callable qw/add_commands schema/;
 use Finances::Utils;
-use base 'Finances::Callable';
+use base 'Finances::Command::Callable';
 use strict;
 use warnings;
 

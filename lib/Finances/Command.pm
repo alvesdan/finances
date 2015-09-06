@@ -1,12 +1,16 @@
 package Finances::Command;
+use Finances::Command::Wallets;
+use Finances::Command::Categories;
+use Finances::Command::Expenses;
+use Finances::Presenter;
 
 use strict;
 use warnings;
 
 our %handlers = (
-  wallets => 'Finances::Wallets',
-  categories => 'Finances::Categories',
-  expenses => 'Finances::Expenses'
+  wallets => 'Finances::Command::Wallets',
+  categories => 'Finances::Command::Categories',
+  expenses => 'Finances::Command::Expenses'
 );
 
 sub read {
