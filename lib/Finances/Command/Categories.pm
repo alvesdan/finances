@@ -42,7 +42,7 @@ sub remove {
   });
 
   if ($category) {
-    if ($category->expenses) {
+    if ($category->expenses->count) {
       p "Can't delete a category with expenses.";
       return;
     }
