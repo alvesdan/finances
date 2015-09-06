@@ -49,12 +49,17 @@ sub add {
   my $category = find_category($category_name);
 
   if ($wallet and $category) {
+    require_or_exit(
+      $amount, "Amount is required.");
+
     my $insert = schema()->resultset('Expense')->create({
       wallet_id => $wallet->id,
       category_id => $category->id,
       amount => $amount,
       description => $description
     });
+
+    p $insert->amount, "\n";
   } else {
     p "Please provide a valid wallet and category.";
   }
