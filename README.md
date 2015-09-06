@@ -12,6 +12,21 @@ $ finances wallets add Personal
 
 # Remove wallet
 $ finances wallets remove Personal
+
+# List categories
+$ finances categories
+
+# Add category
+$ finances categories add "Food & Drink"
+
+# Remove category
+$ finances categories remove "Food & Drink"
+
+# Add expense
+$ finances expenses add Personal "Food & Drink" 10.50 "Lunch"
+
+# List expenses for wallet
+$ finances expenses list Personal
 ```
 
 ### Info
