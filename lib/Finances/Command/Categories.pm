@@ -5,7 +5,7 @@ use base 'Finances::Command::Callable';
 use strict;
 use warnings;
 
-add_commands(__PACKAGE__, 'list', 'add');
+add_commands(__PACKAGE__, 'list', 'add', 'remove');
 
 sub list {
   my $self = shift;
@@ -27,6 +27,31 @@ sub add {
   });
 
   p $insert->name;
+}
+
+sub remove {
+  my $self = shift;
+  my @arguments = @{shift @_};
+  my ($category_name) = @arguments;
+
+  require_or_exit(
+    $category_name, "Name is required.");
+
+  my $category = schema()->resultset('Category')->find({
+    name => $category_name
+  });
+
+  if ($category) {
+    if ($category->expenses) {
+      p "Can't delete a category with expenses.";
+      return;
+    }
+
+    $category->delete;
+    p "Removed $category_name.";
+  } else {
+    p "Could not find $category_name.";
+  }
 }
 
 1;
