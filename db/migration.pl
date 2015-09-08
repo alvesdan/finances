@@ -1,12 +1,12 @@
 use DBIx::Class::Migration;
 use DBIx::Class::DeploymentHandler;
 use lib 'lib';
-use Finances::Schema;
+use Finances;
 
 my $migration = DBIx::Class::Migration->new(
-  schema_class => 'Finances::Schema',
-  schema => Finances::Schema->connect('DBI:Pg:dbname=finances'),
-  target_dir => 'db'
+    schema_class => 'Finances::Schema',
+    schema       => Finances->s(),
+    target_dir   => 'db'
 );
 
 $migration->drop_tables;
