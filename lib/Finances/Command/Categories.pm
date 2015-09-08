@@ -22,9 +22,9 @@ sub add {
         $category_name, "Name is required.");
 
     my $insert = schema()->resultset('Category')->create({
-            name => $category_name,
-            description => $category_description
-        });
+        name => $category_name,
+        description => $category_description
+    });
 
     p $insert->name;
 }
@@ -38,8 +38,8 @@ sub remove {
         $category_name, "Name is required.");
 
     my $category = schema()->resultset('Category')->find({
-            name => $category_name
-        });
+        name => $category_name
+    });
 
     if ($category) {
         if ($category->expenses->count) {
