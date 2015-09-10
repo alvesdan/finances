@@ -5,7 +5,7 @@ use base 'Finances::Command::Callable';
 use strict;
 use warnings;
 
-add_commands(__PACKAGE__, 'list', 'add');
+add_commands(__PACKAGE__, 'list', 'add', 'remove');
 
 sub find_wallet {
     my $wallet_name = shift;
@@ -62,6 +62,25 @@ sub add {
         p $insert->amount, "\n";
     } else {
         p "Please provide a valid wallet and category.";
+    }
+}
+
+sub remove {
+    my $self = shift;
+    my @arguments = @{shift @_};
+    my $id = shift @arguments;
+
+    require_or_exit(
+        $id, "ID is required.");
+
+    my $expense = schema()->resultset('Expense')->find($id);
+
+    if ($expense) {
+        my $expense_amount = $expense->amount;
+        $expense->delete;
+        p "Removed expense $id, $expense_amount.";
+    } else {
+        p "Could not find $id.";
     }
 }
 
