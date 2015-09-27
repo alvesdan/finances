@@ -27,12 +27,14 @@ sub add {
     require_or_exit(
         $wallet_name, "Name is required.");
 
-    my $insert = schema()->resultset('Wallet')->create({
+    my $wallet = schema()->resultset('Wallet')->create({
         name => $wallet_name,
         description => $wallet_description
     });
 
-    p $insert->name;
+    Finances::Presenter->show($wallet, 'name', 'description');
+}
+
 sub edit {
     my $self = shift;
     my @arguments = @{shift @_};
@@ -57,12 +59,12 @@ sub remove {
     require_or_exit(
         $wallet_name, "Name is required.");
 
-    my $remove = schema()->resultset('Wallet')->find({
+    my $wallet = schema()->resultset('Wallet')->find({
         name => $wallet_name
     });
 
-    if ($remove) {
-        $remove->delete;
+    if ($wallet) {
+        $wallet->delete;
         p "Removed $wallet_name.";
     } else {
         p "Could not find $wallet_name.";
