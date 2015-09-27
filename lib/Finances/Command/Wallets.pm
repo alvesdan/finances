@@ -44,8 +44,8 @@ sub edit {
     });
 
     require_or_exit($wallet, "Wallet not found.");
-    my @editable_columns = ('name', 'description');
-    my %edited_columns = read_user_input($wallet, \@editable_columns);
+    my %edited_columns = read_user_input(
+        $wallet, 'name', 'description');
 
     $wallet->update(\%edited_columns);
     Finances::Presenter->show($wallet, 'name', 'description');

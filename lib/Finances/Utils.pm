@@ -22,7 +22,7 @@ sub p {
 
 sub read_user_input {
     my $record = shift;
-    my @columns = @{shift @_};
+    my @columns = @_;
     my %edited = ();
     p "To erase the column content use '-' as value.", "\n";
 
