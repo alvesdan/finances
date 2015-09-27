@@ -52,14 +52,16 @@ sub add {
         require_or_exit(
             $amount, "Amount is required.");
 
-        my $insert = schema()->resultset('Expense')->create({
+        my $expense = schema()->resultset('Expense')->create({
             wallet_id => $wallet->id,
             category_id => $category->id,
             amount => $amount,
             description => $description
         });
 
-        p $insert->amount, "\n";
+        Finances::Presenter->show(
+            $expense, 'amount', 'description',
+            'wallet_name', 'category_name');
     } else {
         p "Please provide a valid wallet and category.";
     }
