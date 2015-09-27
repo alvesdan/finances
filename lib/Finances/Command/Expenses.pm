@@ -5,7 +5,7 @@ use base 'Finances::Command::Callable';
 use strict;
 use warnings;
 
-add_commands(__PACKAGE__, 'list', 'add', 'remove');
+add_commands(__PACKAGE__, 'list', 'add', 'edit', 'remove');
 
 sub find_wallet {
     my $wallet_name = shift;
@@ -31,7 +31,7 @@ sub list {
     if ($wallet) {
         my @expenses = $wallet->expenses;
         Finances::Presenter->list(
-            \@expenses, 'amount', 'description',
+            \@expenses, 'id', 'amount', 'description',
             'wallet_name', 'category_name');
     } else {
         p "Wallet not found.";
@@ -60,11 +60,27 @@ sub add {
         });
 
         Finances::Presenter->show(
-            $expense, 'amount', 'description',
+            $expense, 'id', 'amount', 'description',
             'wallet_name', 'category_name');
     } else {
         p "Please provide a valid wallet and category.";
     }
+}
+
+sub edit {
+    my $self = shift;
+    my @arguments = @{shift @_};
+    my ($id) = @arguments;
+    my $expense = schema()->resultset('Expense')->find($id);
+
+    require_or_exit($expense, "Expense not found.");
+    my %edited_columns = read_user_input(
+        $expense, 'amount', 'description');
+
+    $expense->update(\%edited_columns);
+    Finances::Presenter->show(
+        $expense, 'amount', 'description',
+        'wallet_name', 'category_name');
 }
 
 sub remove {

@@ -5,12 +5,12 @@ use base 'Finances::Command::Callable';
 use strict;
 use warnings;
 
-add_commands(__PACKAGE__, 'list', 'add', 'remove');
+add_commands(__PACKAGE__, 'list', 'add', 'edit', 'remove');
 
 sub list {
     my $self = shift;
     my @categories = schema()->resultset('Category')->all;
-    Finances::Presenter->list(\@categories, 'name');
+    Finances::Presenter->list(\@categories, 'id', 'name', 'description');
 }
 
 sub add {
@@ -27,6 +27,22 @@ sub add {
     });
 
     p $insert->name;
+}
+
+sub edit {
+    my $self = shift;
+    my @arguments = @{shift @_};
+    my ($category_name) = @arguments;
+    my $category = schema()->resultset('Category')->find({
+        name => $category_name
+    });
+
+    require_or_exit($category, "Category not found.");
+    my %edited_columns = read_user_input(
+        $category, 'name', 'description');
+
+    $category->update(\%edited_columns);
+    Finances::Presenter->show($category, 'name', 'description');
 }
 
 sub remove {
