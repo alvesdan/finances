@@ -5,7 +5,7 @@ use base 'Finances::Command::Callable';
 use strict;
 use warnings;
 
-add_commands(__PACKAGE__, 'list', 'add', 'remove');
+add_commands(__PACKAGE__, 'list', 'add', 'edit', 'remove');
 
 sub list {
     my $self = shift;
@@ -33,6 +33,20 @@ sub add {
     });
 
     p $insert->name;
+sub edit {
+    my $self = shift;
+    my @arguments = @{shift @_};
+    my ($wallet_name) = @arguments;
+    my $wallet = schema()->resultset('Wallet')->find({
+        name => $wallet_name
+    });
+
+    require_or_exit($wallet, "Wallet not found.");
+    my @editable_columns = ('name', 'description');
+    my %edited_columns = read_user_input($wallet, \@editable_columns);
+
+    $wallet->update(\%edited_columns);
+    Finances::Presenter->show($wallet, 'name', 'description');
 }
 
 sub remove {
