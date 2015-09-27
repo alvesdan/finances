@@ -13,6 +13,13 @@ $ finances wallets add Personal
 # Remove wallet
 $ finances wallets remove Personal
 
+# Edit wallet
+$ perl finances wallets edit Personal
+To erase the column content use '-' as value.
+name (Personal): Work
+description (My personal wallet): My work wallet
+Work, My work wallet
+
 # List categories
 $ finances categories
 
